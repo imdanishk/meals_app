@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
+import 'package:meals_app/screens/main_drawer.dart';
 import 'package:meals_app/screens/meals.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -38,8 +39,16 @@ class _TabsScreenState extends State<TabsScreen> {
     } else {
       setState(() {
         _favouriteMeals.add(meal);
-        _showInfoMessage('Meal marked as a favourite!'); 
+        _showInfoMessage('Meal marked as a favourite!');  
       });
+    }
+  }
+
+  void _setScreen(String identifier) {
+    if (identifier == 'filters') {
+      
+    } else {
+      Navigator.of(context).pop();
     }
   }
 
@@ -62,6 +71,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(activePageTitle),
       ),
       body: activePage,
+      drawer: MainDrawer(onSelectScreen: _setScreen,),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
