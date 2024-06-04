@@ -34,12 +34,16 @@ class MealItem extends StatelessWidget {
         /// Like Box in Jetpack Compose
         child: Stack(
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              fit: BoxFit.cover, // Ensures the image covers the entire area without distortion
-              height: 200, // Fixed height for the image
-              width: double.infinity, // Image takes the full width of its parent
+            // Hero is used for multi-screen transition
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+                fit: BoxFit.cover, // Ensures the image covers the entire area without distortion
+                height: 200, // Fixed height for the image
+                width: double.infinity, // Image takes the full width of its parent
+              ),
             ),
             // Positioned widget to place the container at the bottom of the stack
             Positioned(
