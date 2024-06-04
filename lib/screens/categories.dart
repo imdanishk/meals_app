@@ -25,13 +25,15 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   void initState() {
     super.initState();
 
+    // Initialize the AnimationController
     _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-      lowerBound: 0,
-      upperBound: 1,
+      vsync: this, // Provides a TickerProvider
+      duration: const Duration(milliseconds: 300), 
+      lowerBound: 0, // Animation's start value
+      upperBound: 1, // Animation's end value
     );
 
+    // Start the animation
     _animationController.forward();
   }
 
@@ -59,7 +61,9 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
+      // Listen to the AnimationController
       animation: _animationController,
+      // Child widget to animate (GridView of categories)
       child: GridView(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -80,23 +84,18 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             ),
         ],
       ),
+      // Animation to slide the child widget into view
       builder: (context, child) => SlideTransition(
-        // position: _animationController.drive(
-        //   Tween(
-        //     begin: const Offset(0, 0.3),
-        //     end: const Offset(0, 0),
-        //   ),
-        // ),
         position: Tween(
-          begin: const Offset(0, 0.3),
-          end: const Offset(0, 0),
+          begin: const Offset(0, 0.3), // Start offset (below the screen)
+          end: const Offset(0, 0), // End offset (original position)
         ).animate(
           CurvedAnimation(
             parent: _animationController,
             curve: Curves.easeInOut,
           ),
         ),
-        child: child,
+        child: child, // The child widget (GridView)
       ),
     );
   }
