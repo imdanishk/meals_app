@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/providers/favourites_provider.dart';
 
+/// ConsumerWidget is a stateless widget provided by Riverpod package
+/// that allows us to listen to our providers and to changes in those provider values.
 class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
     super.key,
@@ -13,6 +15,7 @@ class MealDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Listen to the favouriteMealsProvider to check if the meal is a favourite
     final favouriteMeals = ref.watch(favouriteMealsProvider);
     final isFavourite = favouriteMeals.contains(meal);
 
@@ -35,18 +38,33 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(isFavourite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween<double>(begin: 0.85, end: 1).animate(animation),
+                  child: child, // The child widget (icon) being animated
+                );
+              },
+              child: Icon(
+                isFavourite ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavourite), // Key to identify each icon uniquely
+              ),
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 14),
             Text(
